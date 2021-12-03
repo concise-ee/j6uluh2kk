@@ -34,16 +34,15 @@ spec:
               memory: 400Mi
           name: demo
           ports:
-            - containerPort: 8080
+            - containerPort: 3080
           # used to check if application is healthy
           livenessProbe:
             httpGet:
               path: /api/christmas
               port: 3080
-            initialDelaySeconds: 100
+            initialDelaySeconds: 10
           # used to check if it is ready (i.e. could route traffic)
           readinessProbe:
             httpGet:
               path: /api/christmas
               port: 3080
-            initialDelaySeconds: 100

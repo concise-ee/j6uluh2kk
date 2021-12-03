@@ -30,6 +30,11 @@ jobs:
       - name: Use gcloud CLI
         run: gcloud info
 
+      - name: Set base path for next.js
+        run: |-
+          sed -ie "s/NAME/$TEAM/g" next.config.js
+          mv next.config.js my-app/
+
       # Build docker image
       - name: Image
         run: |-
