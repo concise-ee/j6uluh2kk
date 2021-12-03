@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: demo
+  namespace: demo
 spec:
   replicas: 1
   strategy:
@@ -20,7 +21,7 @@ spec:
       containers:
         # container image is referenced from GCR (Google Container Registry)
         # make sure your tag (:1 or :2) is correct for the image you are downloading
-        - image: eu.gcr.io/j6uluh2kk/demo:1
+        - image: eu.gcr.io/j6uluh2kk/IMAGE
           resources:
             # how much resources container is guaranteed to get
             requests:
@@ -32,11 +33,6 @@ spec:
               cpu: 200m
               memory: 400Mi
           name: demo
-          env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: STAGING
-            - name: JAVA_OPTS
-              value: -Xmx256m -Xms256m
           ports:
             - containerPort: 8080
           # used to check if application is healthy

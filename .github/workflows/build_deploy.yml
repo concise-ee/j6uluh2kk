@@ -1,4 +1,4 @@
-name: Build
+name: Build and Deploy
 on:
   push:
     branches:
@@ -12,6 +12,7 @@ jobs:
     env:
       PROJECT_ID: j6uluh2kk
       REPO: ${{ github.event.repository.name }}
+      TEAM: demo
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -40,3 +41,23 @@ jobs:
       - name: Push
         run: |-
           docker push eu.gcr.io/$PROJECT_ID/$REPO:$GITHUB_SHA
+
+      # Get the GKE credentials so we can deploy to the cluster
+      - uses: google-github-actions/get-gke-credentials@fb08709ba27618c31c09e014e1d8364b02e5042e
+        with:
+          cluster_name: ${{ env.PROJECT_ID }}
+          location: europe-west-1
+          credentials: ${{ secrets.GCR_J6ULUH2KK_SERVICE_ACCOUNT_KEY }}
+
+      - name: Set correct params
+        run: |
+          sed -ie "s/IMAGE/$REPO:$GITHUB_SHA/g" k8s/deployment.yml
+          sed -ie "s/NAME/$TEAM/g" k8s/ingress.yml
+          sed -ie "s/NAME/$TEAM/g" k8s/deployment.yml
+          sed -ie "s/NAME/$TEAM/g" k8s/namespace.yml
+          sed -ie "s/NAME/$TEAM/g" k8s/service.yml
+
+      - name: Deploy
+        run: |-
+          kubectl apply -f k8s/namespace.yml
+          kubectl apply -f k8s/*.yml
