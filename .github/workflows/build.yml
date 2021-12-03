@@ -11,7 +11,7 @@ jobs:
 
     env:
       PROJECT_ID: j6uluh2kk
-      REPO: ${GITHUB_REPOSITORY#*/}
+      REPO: ${{ github.event.repository.name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
