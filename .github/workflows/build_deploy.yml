@@ -30,11 +30,6 @@ jobs:
       - name: Use gcloud CLI
         run: gcloud info
 
-      - name: Set base path for next.js
-        run: |-
-          sed -ie "s/NAME/$TEAM/g" next.config.js
-          mv next.config.js my-app/
-
       # Build docker image
       - name: Image
         run: |-
@@ -57,7 +52,6 @@ jobs:
       - name: Set correct params
         run: |
           sed -ie "s/IMAGE/$REPO:$GITHUB_SHA/g" k8s/deployment.yml
-          sed -ie "s/NAME/$TEAM/g" k8s/ingress.yml
           sed -ie "s/NAME/$TEAM/g" k8s/deployment.yml
           sed -ie "s/NAME/$TEAM/g" k8s/namespace.yml
           sed -ie "s/NAME/$TEAM/g" k8s/service.yml
@@ -67,4 +61,3 @@ jobs:
           kubectl apply -f k8s/namespace.yml
           kubectl apply -f k8s/service.yml
           kubectl apply -f k8s/deployment.yml
-          kubectl apply -f k8s/ingress.yml
