@@ -2,6 +2,13 @@
 
 Based on https://medium.com/bb-tutorials-and-thoughts/how-to-develop-and-build-next-js-app-with-nodejs-backend-7ff91841bd3
 
+TLDR:
+1. Check `TEAM` in `.github/workflows/build_deploy.yml` to see your team name
+2. Try local dev
+3. Every push will do a redeploy
+4. You don't have to use this template, but it's a quickstart to just get something running.
+
+try local dev, then try if depl
 
 ## Local dev
 
